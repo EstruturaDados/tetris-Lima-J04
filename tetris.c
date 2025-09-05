@@ -26,7 +26,7 @@ typedef struct {
 } pilha;
 
 // Protótipos
-peca gerarPeca();
+peca gerarpeca();
 void inicializarFila(fila* f);
 void inicializarPilha(pilha* p);
 void enfileirar(fila* f, peca p);
