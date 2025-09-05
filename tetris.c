@@ -9,40 +9,40 @@
 typedef struct {
     char nome; // 'I', 'O', 'T', 'L'
     int id;
-} Peca;
+} peca;
 
 // Fila circular
 typedef struct {
-    Peca dados[TAM_FILA];
+    peca dados[TAM_FILA];
     int inicio;
     int fim;
     int total;
-} Fila;
+} fila;
 
 // Pilha
 typedef struct {
-    Peca dados[TAM_PILHA];
+    peca dados[TAM_PILHA];
     int topo;
-} Pilha;
+} pilha;
 
 // Protótipos
-Peca gerarPeca();
-void inicializarFila(Fila* f);
-void inicializarPilha(Pilha* p);
-void enfileirar(Fila* f, Peca p);
-Peca desenfileirar(Fila* f);
-int empilhar(Pilha* p, Peca p);
-Peca desempilhar(Pilha* p);
-void exibirEstado(Fila f, Pilha p);
-void trocarTopoComFrente(Fila* f, Pilha* p);
-void trocarMultiplas(Fila* f, Pilha* p);
+peca gerarPeca();
+void inicializarFila(fila* f);
+void inicializarPilha(pilha* p);
+void enfileirar(fila* f, peca p);
+peca desenfileirar(fila* f);
+int empilhar(pilha* p, peca p);
+peca desempilhar(pilha* p);
+void exibirEstado(fila f, pilha p);
+void trocarTopoComFrente(fila* f, pilha* p);
+void trocarMultiplas(fila* f, pilha* p);
 
 // Variável global para ID das peças
 int proximoId = 0;
 
 int main() {
-    Fila fila;
-    Pilha pilha;
+    fila fila;
+    pilha pilha;
     int opcao;
     
     srand(time(NULL));
@@ -72,7 +72,7 @@ int main() {
         switch(opcao) {
             case 1: // Jogar
                 if (fila.total > 0) {
-                    Peca jogada = desenfileirar(&fila);
+                    peca jogada = desenfileirar(&fila);
                     printf("Peça [%c %d] jogada!\n", jogada.nome, jogada.id);
                     enfileirar(&fila, gerarPeca());
                 } else {
@@ -82,7 +82,7 @@ int main() {
             case 2: // Reservar
                 if (pilha.topo < TAM_PILHA) {
                     if (fila.total > 0) {
-                        Peca reservada = desenfileirar(&fila);
+                        peca reservada = desenfileirar(&fila);
                         empilhar(&pilha, reservada);
                         printf("Peça [%c %d] reservada!\n", reservada.nome, reservada.id);
                         enfileirar(&fila, gerarPeca());
@@ -95,7 +95,7 @@ int main() {
                 break;
             case 3: // Usar peça da pilha
                 if (pilha.topo > 0) {
-                    Peca usada = desempilhar(&pilha);
+                    peca usada = desempilhar(&pilha);
                     printf("Peça [%c %d] usada!\n", usada.nome, usada.id);
                 } else {
                     printf("Pilha vazia.\n");
@@ -120,8 +120,8 @@ int main() {
 }
 
 // Função que gera uma nova peça com tipo aleatório
-Peca gerarPeca() {
-    Peca nova;
+peca gerarpeca() {
+    peca nova;
     char tipos[] = {'I', 'O', 'T', 'L'};
     nova.nome = tipos[rand() % 4];
     nova.id = proximoId++;
@@ -129,19 +129,19 @@ Peca gerarPeca() {
 }
 
 // Inicializa fila
-void inicializarFila(Fila* f) {
+void inicializarFila(fila* f) {
     f->inicio = 0;
     f->fim = 0;
     f->total = 0;
 }
 
 // Inicializa pilha
-void inicializarPilha(Pilha* p) {
+void inicializarPilha(pilha* p) {
     p->topo = 0;
 }
 
 // Enfileira peça na fila circular
-void enfileirar(Fila* f, Peca p) {
+void enfileirar(fila* f, peca p) {
     if (f->total < TAM_FILA) {
         f->dados[f->fim] = p;
         f->fim = (f->fim + 1) % TAM_FILA;
@@ -150,8 +150,8 @@ void enfileirar(Fila* f, Peca p) {
 }
 
 // Remove peça da frente da fila
-Peca desenfileirar(Fila* f) {
-    Peca p = {0};
+peca desenfileirar(fila* f) {
+    peca p = {0};
     if (f->total > 0) {
         p = f->dados[f->inicio];
         f->inicio = (f->inicio + 1) % TAM_FILA;
@@ -161,7 +161,7 @@ Peca desenfileirar(Fila* f) {
 }
 
 // Empilha peça
-int empilhar(Pilha* p, Peca pe) {
+int empilhar(pilha* p, peca pe) {
     if (p->topo < TAM_PILHA) {
         p->dados[p->topo++] = pe;
         return 1;
@@ -170,8 +170,8 @@ int empilhar(Pilha* p, Peca pe) {
 }
 
 // Desempilha peça
-Peca desempilhar(Pilha* p) {
-    Peca pe = {0};
+peca desempilhar(pilha* p) {
+    peca pe = {0};
     if (p->topo > 0) {
         pe = p->dados[--p->topo];
     }
@@ -179,7 +179,7 @@ Peca desempilhar(Pilha* p) {
 }
 
 // Exibe estado atual das estruturas
-void exibirEstado(Fila f, Pilha p) {
+void exibirEstado(fila f, pilha p) {
     printf("Fila de peças\t: ");
     int idx = f.inicio;
     for (int i = 0; i < f.total; i++) {
@@ -196,10 +196,10 @@ void exibirEstado(Fila f, Pilha p) {
 }
 
 // Troca peça da frente da fila com o topo da pilha
-void trocarTopoComFrente(Fila* f, Pilha* p) {
+void trocarTopoComFrente(fila* f, pilha* p) {
     if (f->total > 0 && p->topo > 0) {
         int idx = f->inicio;
-        Peca temp = f->dados[idx];
+        peca temp = f->dados[idx];
         f->dados[idx] = p->dados[p->topo - 1];
         p->dados[p->topo - 1] = temp;
         printf("Troca entre frente da fila e topo da pilha realizada.\n");
@@ -209,11 +209,11 @@ void trocarTopoComFrente(Fila* f, Pilha* p) {
 }
 
 // Troca múltipla entre 3 primeiros da fila e 3 da pilha
-void trocarMultiplas(Fila* f, Pilha* p) {
+void trocarMultiplas(fila* f, pilha* p) {
     if (f->total >= 3 && p->topo >= 3) {
         for (int i = 0; i < 3; i++) {
             int idx = (f->inicio + i) % TAM_FILA;
-            Peca temp = f->dados[idx];
+            peca temp = f->dados[idx];
             f->dados[idx] = p->dados[p->topo - 1 - i];
             p->dados[p->topo - 1 - i] = temp;
         }
