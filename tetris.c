@@ -47,12 +47,12 @@ int main() {
     
     srand(time(NULL));
     
-    inicializarFila(&fila);
-    inicializarPilha(&pilha);
+    inicializarfila(&fila);
+    inicializarpilha(&pilha);
     
     // Inicializa fila com 5 peças
     for (int i = 0; i < TAM_FILA; i++) {
-        enfileirar(&fila, gerarPeca());
+        enfileirar(&fila, gerarpeca());
     }
     
     do {
@@ -136,7 +136,7 @@ void inicializarFila(fila* f) {
 }
 
 // Inicializa pilha
-void inicializarPilha(pilha* p) {
+void inicializarpilha(pilha* p) {
     p->topo = 0;
 }
 
